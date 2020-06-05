@@ -12,10 +12,11 @@ def goDeeper(pos, arr):
         print('after', total)
     else:
 
-        for i in range(childCount):
-            print('nest before', total)
-            total += goDeeper(pos + 2, arr)
-            print('nest after', total)
+        # for i in range(childCount):
+        
+        print('nest before', total)
+        total += goDeeper(pos + 2, arr)
+        print('nest after', total)
     return total
 
 
