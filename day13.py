@@ -8,10 +8,10 @@ def printTrack(a):
 
 a = []
 carts = []
-for i in range(7):
+for i in range(150):
     a.append(list(input()))
 
-# printTrack(a)
+printTrack(a)
 # print(*a)
 forks = {}
 for i in range(len(a)):
@@ -35,7 +35,7 @@ for i in range(len(a)):
 # print(carts)
 noCrash = True
 counter = 0
-while noCrash and counter < 25000:
+while noCrash and counter < 20000:
     newBoard = copy.deepcopy(a)
     poses = {}
     # print(counter // 2)
@@ -65,15 +65,16 @@ while noCrash and counter < 25000:
             i[1] -= 1
         pos = (i[0], i[1])
         # print(pos)
-        newBoard[pos[0]][pos[1]] = 'o'
 
         if(pos not in poses):
             poses[pos] = 1
+            newBoard[pos[0]][pos[1]] = 'o'
         else:
             poses[pos] += 1
             # print(pos)
             # # noCrash = False
-            # carts.remove(i)
+            carts.remove(i)
+
             # print('crashed 2')
             print('now fake answer', pos[1], pos[0])
 
@@ -81,7 +82,7 @@ while noCrash and counter < 25000:
             #     if (remain[0], remain[1]) in pos:
 
             # continue
-            break
+            continue
         
         if(pos in forks):
             # print('got to', pos, "fork")
@@ -99,24 +100,35 @@ while noCrash and counter < 25000:
             else:
                 print('wrong')
             # print('switched to', )
-            cartNum += 1
+        
+        cartNum += 1
+
+    # print(poses)
     for key in poses:
+
         if(poses[key] > 1):
+
             jk = 0
             while jk < len(carts):
-                if(carts[jk][0], carts[jk][1]) == poses[key]:
-                    carts.pop(jk)
+                cur = (carts[jk][0], carts[jk][1])
+                # print(cur)
+                if (carts[jk][0], carts[jk][1]) == key:
+                    # print('removed')
+                    carts.remove(carts[jk])
                 else:
                     jk += 1
             # for remain in carts:
             #     if (remain[0], remain[1]) in pos:
     if(len(carts) == 1):
         print('last cart is',carts[0])
+        print("answer ", carts[0][1], ',', carts[0][0], sep ='')
+        break
+    print('remaining carts',len(carts))
     counter += 1
     print(counter)
     # for q in carts:
         # print(i)
-    printTrack(newBoard)
+    # printTrack(newBoard)
         
     carts.sort()
 
