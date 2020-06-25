@@ -1,8 +1,8 @@
 from collections import deque
 depth = 510
-depth = 4848
+# depth = 4848
 targetXY = (10, 10)
-targetXY = (15, 700)
+# targetXY = (15, 700)
 geo = deque([deque([0 for i in range(targetXY[0] + 1)])] * (targetXY[1] + 1))
 
 total = 0
@@ -46,7 +46,13 @@ while pos <= targetXY[1]:
     pos += 1
 print(total)
 
+equip = ['torch', 'climb', 'neither']
+for i in range(len(geo)):
+    for j in range(len(geo[i])):
+        geo[i][j] %= 3 
 
+for i in geo:
+    print(i)
 # print(geo)    
 # while pos <= targetXY[1] + 1:
 
