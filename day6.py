@@ -1,48 +1,117 @@
-# # def wrapAround(xPos, yPos, board):
-# #     e = 0
-# #     for i in range(yPos -1, yPos + 2):
-# #         for j in range(xPos -1, xPos + 2):
-# #             board[i][j] = 
+from collections import deque
 
-# # d= dict.fromkeys([chr(i) for i in range(65, 65 + 26)], 0)
-# # e= dict.fromkeys([chr(i) for i in range(97, 97 + 26)], 0)
-# # g = [chr(i) for i in range(65, 65 + 26)]
-# # dum= [chr(i) for i in range(97, 97 + 26)]
-# g = g + dum
-# print(g)
-# points = {}
-# x = {}
-# y = {}
-# d.update(e)
-# # print(d)
-board = [[0 for i in range(365)] for j in range(365)]
-c= []
+def manhat(a, b):
+    total = 0
+    for i in range(2):
+        total += abs(a[i] - b[i])
+    return total
+# board = deque([deque([0 for i in range(-30, 380)]) for j in range(-30, 380)])
+offset = 0
+dim = 404
+board = deque([deque([0 for i in range(0- offset, dim)]) for j in range(0- offset, dim)])
+# board[5][6] = 7
+# for i in board:
+#     print(i)
+# c= []
+points = dict()
 for i in range(50):
-    c.append(tuple(map(int, input().split(','))))
+# for i in range(6):
+    # c.append(tuple(map(int, input().split(','))))
+    points[tuple(map(int, input().split(',')))] = 0
 
-xPoints = {}
-c.sort()
-for i in c:
-    xPoints[(i)] = 1
+edgePoints = set()
+for y in range(offset, len(board)):
+    for x in range(offset, len(board[0])):
+        isTie = False
+        closet = (1000000, 1000000)
+        for key in points:
+            man1 = manhat(closet, (y,x))
+            man2 = manhat(key, (y,x))
+            # print(y, x, man1, man2)
 
-c.sort(key = lambda x: x[1])
-yPoints = {}
-for i in c:
-    yPoints[(i)] = 1
+            if man2 < man1:
+                closet = key
+                # print('new closet', closet)
+                isTie = False
+            elif man1 == man2:
+                isTie = True
+        if isTie == False:
+            # print('adding', y, x, key )
+            # print(points)
+            board[y][x] = closet
+            points[closet] += 1
+            # if x == 0 or y == 0 or x == len(board)-1 or y == len(board)-1:
+            #     points.pop(closet)
+    print(y)
+
+points = {k: v for k, v in sorted(points.items(), key=lambda item: item[1])}
+print(points)
+for i in board[0]:
+    edgePoints.add(i)
+for i in board[-1]:
+    edgePoints.add(i)
+
+dum = deque([i[0] for i in board])
+for col in dum:
+    edgePoints.add(col)
+dum = deque([i[-1] for i in board])
+for col in dum:
+    edgePoints.add(col)
+print(edgePoints)
+# for i in board:
+#     print(i)
+
+
+pos = 0
+answer = dict()
+for i in points:
+    if i not in edgePoints:
+        answer[i] = points[i]
+answer = {k: v for k, v in sorted(answer.items(), key=lambda item: item[1])}
+
+print(answer)
+
+
+# dist = 10
+# for p in points:
+#     for x in range(-dist, dist):
+#         for y in range(-dist, dist):
+#             if p[1] + y < 0 or p[0] + x < 0 or p[1] + y >= len(board) or \
+#             p[0] + x >= len(board[0]):
+#                 continue
+#             if board[p[1]+y][p[0]+x] == 0:
+#                 board[p[1]+y][p[0]+x] = p
+#                 points[p] += 1
+#             elif manhat(board[p[1]+y][p[0]+x], p) == manhat(board[board[p[1]][p[0]][1]][board[board[p[1]][p[0]][0]]], board[p[1]+y][p[0]+x]):
+#                 points[board[board[p[1]+y][p[0]+x]]] -= 1
+
+#             elif manhat(board[p[1]+y][p[0]+x], p) < manhat(board[p[1]][p[0]], board[p[1]+y][p[0]+x]):
+#                 # print(board[p[1]+y][p[0]+x])
+#                 points[board[p[1]+y][p[0]+x]] -= 1
+#                 points[p] += 1
+#                 board[p[1]+y][p[0]+x] = p
+
+
+
+
+
+
+# xPoints = {}
+# c.sort()
+# for i in c:
+#     xPoints[(i)] = 1
+
+# c.sort(key = lambda x: x[0]+x[1])
+# for i in c:
+#     print(i)
+
+# yPoints = {}
+# for i in c:
+#     yPoints[(i)] = 1
 # print(c)
-print(xPoints)
-print()
-print(yPoints)
-
-pointID = 65
-for i in xPoints:
-    board[i[0]][i[1]] = chr(pointID)
-    pointID += 1
-    if(pointID == 91):
-        pointID = 97
-
-for i in board:
-    print(i)
+# print(xPoints)
+# print()
+# print(yPoints)
 
 
 
